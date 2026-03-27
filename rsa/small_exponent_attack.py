@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-from sage.all import *
+from Crypto.Util.number import getPrime
 from gmpy2 import iroot
+from random import randint
 
 def small_exponent_attack(c, e):
     m, exact = iroot(c, e)
@@ -11,9 +12,9 @@ def small_exponent_attack(c, e):
     return None
 
 # --- Setup ---
-p = random_prime(2**512)
-q = random_prime(2**512)
-N = int(p*q)
+p = getPrime(512)
+q = getPrime(512)
+N = p*q
 e = 3
 
 m = randint(2, iroot(N, e)[0])

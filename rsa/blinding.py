@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-from sage.all import gcd, random_prime, randint
-from Crypto.Util.number import bytes_to_long, long_to_bytes
-
+from math import gcd
+from Crypto.Util.number import bytes_to_long, long_to_bytes, getPrime
+from random import randint
 
 # --- Setup ---
-p = int(random_prime(2**512))
-q = int(random_prime(2**512))
+p = getPrime(512)
+q = getPrime(512)
 N = p*q
 e = 0x10001
 d = pow(e, -1, (p-1)*(q-1))

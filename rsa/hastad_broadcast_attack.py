@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
+import os
 from sage.all import *
-from Crypto.Util.number import bytes_to_long
+from Crypto.Util.number import bytes_to_long, getPrime
 from gmpy2 import iroot
 
 def generate_rsa_key(e):
     while True:
-        p = int(random_prime(2**512))
-        q = int(random_prime(2**512))
+        p = getPrime(512)
+        q = getPrime(512)
         phi = (p-1)*(q-1) 
         if gcd(e, phi) == 1:
             N = p*q
@@ -20,6 +21,7 @@ def hastad_broadcast_attack(ciphertexts, moduli, e):
     if exact:
         return m
     return None
+
 
 
 # --- Setup ---
