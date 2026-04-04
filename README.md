@@ -33,7 +33,11 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 
 
 ## Refereces
-1. Boneh, D. (1999). *Twenty Years of Attacks on the RSA Cryptosystem*. 
-2. Arora, S., & Ge, R. (2011). *New algorithms for learning in presence of errors*.
-3. Menezes, A. J., & Wu, Y.-H. (1997). *The Discrete Logarithm Problem in GL(n, q)*.
+- Boneh, D. (1999). *Twenty Years of Attacks on the RSA Cryptosystem*. 
+- Arora, S., & Ge, R. (2011). *New algorithms for learning in presence of errors*.
+- Menezes, A. J., & Wu, Y.-H. (1997). *The Discrete Logarithm Problem in GL(n, q)*.
+- Stephen C. Pohlig & Martin Hellman (1978). *An Improved Algorithm for Computing Logarithms over GF(p).*
+- Smart, N. P. (1999). *The Discrete Logarithm Problem on Elliptic Curves of Trace One*.
+- Menezes, A., Okamoto, T., & Vanstone, S. (1993). *Reducing Elliptic Curve Logarithms to Logarithms in a Finite Field*.
+- Breitner, J., & Heninger, N. (2019). *Biased Nonce Sense: Lattice Attacks against Weak ECDSA Signatures in Cryptocurrencies*.
 
