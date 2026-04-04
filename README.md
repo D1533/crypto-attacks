@@ -9,9 +9,9 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 ## Structure and Contents
 
 ### Diffie-Hellman Attacks
-- [Discrete log in GL(p, n)](diffie-hellman/discrete_log_GL.py) – Solve discrete log in GL(p, n)
+- [Discrete log in GL(n, p)](diffie-hellman/discrete_log_GL.py) – Solve discrete log in GL(n, p).
 - [Pohlig-Hellman Attack](diffie-hellman/pohlig_hellman.py) – Solve discrete log when the group order is smooth (factorable into small primes).
-- [Small Subgroup Attack](diffie-hellman/small_subgroup_attack_poc.py) – Solve discrete log trivially when the order of the group is small
+- [Small Subgroup Attack](diffie-hellman/small_subgroup_attack_poc.py) – Solve discrete log when the order of the group is small.
 
 ### Elliptic Curve Attacks
 - [ECDSA Biased Nonces Attack](ecc/ecdsa_biased_nonce_attack.py) –  Recover private key when nonces are partially predictable (lattice attack).
@@ -30,3 +30,10 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 - [Franklin-Reiter Attack](rsa/franklin_reiter.py) -   Recover messages that are linearly related and encrypted with same modulus.
 - [Hastad Broadcast Attack](rsa/hastad_broadcast_attack.py) - Recover plaintext sent to multiple recipients with a small exponent.
 - [Small Exponent Attack](rsa/small_exponent_attack.py) - Recover plaintext directly when exponent is small.
+
+
+## Refereces
+1. Boneh, D. (1999). *Twenty Years of Attacks on the RSA Cryptosystem*. 
+2. Arora, S., & Ge, R. (2011). *New algorithms for learning in presence of errors*.
+3. Menezes, A. J., & Wu, Y.-H. (1997). *The Discrete Logarithm Problem in GL(n, q)*.
+
