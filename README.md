@@ -10,7 +10,7 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 
 
 ### AES Attacks
-- [ECB Byte At A Time](aes/ecb_byte_at_a_time.py) - Recover secret appended to controlled input using an ECB encryption oracle (chosen-plaintext attack).
+- [ECB Byte At A Time](aes/ecb_byte_at_a_time.py) - Recover secret appended to controlled input using an ECB encryption oracle.
 
 ### Diffie-Hellman Attacks
 - [Discrete log in GL(n, p)](diffie-hellman/discrete_log_GL.py) – Solve discrete log in GL(n, p).
