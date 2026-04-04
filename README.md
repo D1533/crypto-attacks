@@ -10,6 +10,7 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 
 
 ### AES Attacks
+- [CTR Bit Flipping Attack](aes/ctr_bit_flipping_attack.py) - Modify ciphertext to produce a chosen plaintext upon decryption.
 - [ECB Byte At A Time](aes/ecb_byte_at_a_time.py) - Recover secret appended to controlled input using an ECB encryption oracle.
 
 ### Diffie-Hellman Attacks
@@ -35,7 +36,7 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 - [Franklin-Reiter Attack](rsa/franklin_reiter.py) -   Recover messages that are linearly related and encrypted with same modulus.
 - [Hastad Broadcast Attack](rsa/hastad_broadcast_attack.py) - Recover plaintext sent to multiple recipients with a small exponent.
 - [Small Exponent Attack](rsa/small_exponent_attack.py) - Recover plaintext directly when exponent is small.
-- [Wiener Attack](rsa/wiener_attack.py) - Recover $d$ when $d < \frac{1}{3} N^{1/4}$
+- [Wiener Attack](rsa/wiener_attack.py) - Recover $d$ when $d < \frac{1}{3} N^{1/4}$.
 
 ## References
 - Boneh, D. (1999). *Twenty Years of Attacks on the RSA Cryptosystem*. 
