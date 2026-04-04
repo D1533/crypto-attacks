@@ -8,19 +8,20 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 
 ## Structure and Contents
 
-- **diffie-hellman/** – Attacks on Diffie-Hellman key exchange
-  - `discrete_log_GL.py` – Solve discrete log in GL(p, n)
-  - `pohlig_hellman.py` – Pohlig-Hellman attack for smooth-order groups
-  - `small_subgroup_attack_poc.py` – Solve discrete log trivially when the order of the group is small
+## Diffie-Hellman Attacks
+- [Discrete log in GL(p, n)](diffie-hellman/discrete_log_GL.py) – Solve discrete log in GL(p, n)
+- [Pohlig-Hellman Attack](ecc/pohlig_hellman.py) – Pohlig-Hellman attack for smooth-order groups
+- [Small Subgroup Attack](ecc/small_subgroup_attack_poc.py) – Solve discrete log trivially when the order of the group is small
 
-- **ecc/** – Attacks on elliptic curve cryptography
-  - `ecdsa_biased_nonce_attack.py` – Recover private key from biased nonces
-  - `ecdsa_nonce_reuse.py` – Exploit nonce reuse in ECDSA
-  - `mov_attack.py` – MOV attack for pairing-based curves
-  - `smart_attack.py` – Smart attack on weak curves
+## Elliptic Curve Attacks
+- [ECDSA Biased Nonces Attack](ecc/ecdsa_biased_nonce_attack.py) – Recover private key from biased nonces
+- [ECDSA Nonce Reuse Attack](ecc/ecdsa_nonce_reuse.py) – Exploit nonce reuse in ECDSA
+- [MOV Attack](mov_attack.py) – MOV attack for pairing-based curves
+- [Smart Attack](ecc/smart_attack.py) – Smart attack on weak curves
 
-- **lwe/** – Attacks on lattice-based schemes
-  - `arora_ge.py` – Arora-Ge algorithm for LWE
+
+## LWE Attacks
+- [Arora-Ge](lwe/arora_ge.py) 
 
 ## RSA Attacks
 - [Batch GCD Attack](rsa/batch_gcd_attack.py)
