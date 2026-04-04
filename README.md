@@ -21,6 +21,7 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 
 ### LWE Attacks
 - [Arora-Ge](lwe/arora_ge.py) - Algebraic attack on LWE by solving polynomial systems (works for small noise).
+- [Least-Squares Attack](lwe/least_squares_attack.py) - Recover secret vector when modulus reduction is not applied.
 
 ### RSA Attacks
 - [Batch GCD Attack](rsa/batch_gcd_attack.py) - Factor multiple RSA moduli sharing primes.
