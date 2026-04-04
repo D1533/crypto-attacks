@@ -1,8 +1,8 @@
-# Cryptography Attacks Repository
+## Cryptography Attacks Repository
 
-A collection of cryptographic attack implementations and proofs-of-concept in Python/SageMath.
+A collection of cryptographic attack implementations and proofs-of-concept in SageMath and Python
 
-# Requirements 
+## Requirements 
 - SageMath, Python
 - PyCryptodome
 
