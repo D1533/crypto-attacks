@@ -1,4 +1,4 @@
-## Cryptography Attacks
+## Crypto Attacks
 
 A collection of cryptographic attack implementations and proofs-of-concept in SageMath and Python.
 
