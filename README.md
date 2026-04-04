@@ -31,7 +31,7 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 - [Franklin-Reiter Attack](rsa/franklin_reiter.py) -   Recover messages that are linearly related and encrypted with same modulus.
 - [Hastad Broadcast Attack](rsa/hastad_broadcast_attack.py) - Recover plaintext sent to multiple recipients with a small exponent.
 - [Small Exponent Attack](rsa/small_exponent_attack.py) - Recover plaintext directly when exponent is small.
-- [Wiener Attack](rsa/wiener_attack.py) - Recover $$d$$ when $$d < \frac{1}{3} N^{1/4}$$
+- [Wiener Attack](rsa/wiener_attack.py) - Recover $$d$$ when $$d < \dfrac{1}{3} N^{1/4}$$
 
 ## References
 - Boneh, D. (1999). *Twenty Years of Attacks on the RSA Cryptosystem*. 
