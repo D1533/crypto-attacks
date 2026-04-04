@@ -26,17 +26,17 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 - [Batch GCD Attack](rsa/batch_gcd_attack.py) - Factor multiple RSA moduli sharing primes.
 - [Blinding Attack](rsa/blinding.py) - Forge a valid signature for a prohibited message using a signing oracle.
 - [Common Modulus Attack](rsa/common_modulus_attack.py) -   Recover plaintext when same modulus is used with coprime exponents.
-- [Coopersmith Short Pad Attack](rsa/coopersmith_short_pad_attack.py) -  Recover message when padding is too short (small unknown part).
+- [Coppersmith Short Pad Attack](rsa/coppersmith_short_pad_attack.py) -  Recover message when padding is too short (small unknown part).
 - [Franklin-Reiter Attack](rsa/franklin_reiter.py) -   Recover messages that are linearly related and encrypted with same modulus.
 - [Hastad Broadcast Attack](rsa/hastad_broadcast_attack.py) - Recover plaintext sent to multiple recipients with a small exponent.
 - [Small Exponent Attack](rsa/small_exponent_attack.py) - Recover plaintext directly when exponent is small.
 
 
-## Refereces
+## References
 - Boneh, D. (1999). *Twenty Years of Attacks on the RSA Cryptosystem*. 
 - Arora, S., & Ge, R. (2011). *New algorithms for learning in presence of errors*.
 - Menezes, A. J., & Wu, Y.-H. (1997). *The Discrete Logarithm Problem in GL(n, q)*.
-- Stephen C. Pohlig & Martin Hellman (1978). *An Improved Algorithm for Computing Logarithms over GF(p).*
+- Pohlig, S. C., & Hellman, M. (1978). *An Improved Algorithm for Computing Logarithms over GF(p).*
 - Smart, N. P. (1999). *The Discrete Logarithm Problem on Elliptic Curves of Trace One*.
 - Menezes, A., Okamoto, T., & Vanstone, S. (1993). *Reducing Elliptic Curve Logarithms to Logarithms in a Finite Field*.
 - Breitner, J., & Heninger, N. (2019). *Biased Nonce Sense: Lattice Attacks against Weak ECDSA Signatures in Cryptocurrencies*.
