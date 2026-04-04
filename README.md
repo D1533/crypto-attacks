@@ -3,7 +3,7 @@
 A collection of cryptographic attack implementations and proofs-of-concept in SageMath and Python.
 
 ## Requirements 
-- SageMath, Python
+- SageMath, Python 3
 - PyCryptodome
 
 ## Structure and Contents
