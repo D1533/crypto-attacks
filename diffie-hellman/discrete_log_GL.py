@@ -63,7 +63,7 @@ def main():
     # --- Setup ---
     vuln_dlp = VulnerableDLP()
     n, p, G, B = vuln_dlp.get_public_parameters()
-    print(n, p)
+    
     # --- PoC - Discrete logarithm in GL(n, p) ---
     x = discrete_log_GL(n, p, G, B)
     assert(x == vuln_dlp.x)
