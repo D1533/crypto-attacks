@@ -4,41 +4,38 @@ from Crypto.Cipher import AES
 from random import randint
 import os
 
+BLOCK_SIZE = 16
 
-def encrypt_oracle(userdata):
-    userdata = userdata.replace(b";", b"").replace(b"=", b"")
-    pt = b"user=" + userdata + b";admin=false"
+class Oracle():
+    def __init__(self):
+        self.key = os.urandom(BLOCK_SIZE)
+        self.nonce = os.urandom(8)
 
-    cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
-    return cipher.encrypt(pt)
+    def encrypt(self, pt):
+        pt = pt.replace(b";", b"").replace(b"=", b"")
+        pt = b"user=" + pt + b";admin=false"
 
-def decrypt(ct):
-    cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)
-    return cipher.decrypt(ct)
+        cipher = AES.new(self.key, AES.MODE_CTR, nonce=self.nonce)
+        return cipher.encrypt(pt)
 
-def ctr_bit_flipping_attack():
-    payload = b"A" * 16
-    ct = encrypt_oracle(payload)
+    def decrypt(self, ct):
+        cipher = AES.new(self.key, AES.MODE_CTR, nonce=self.nonce)
+        return cipher.decrypt(ct)
 
-    prefix = b"user=" + payload + b";admin="
-    offset = len(prefix)
-
-    original = b"false"
-    target = b"true\x00"
+def ctr_bit_flipping_attack(ct, original, target, offset):
     ct = bytearray(ct)
     for i in range(len(original)):
-        ct[offset + i] ^= original[i] ^ target[i]
-
+        ct[offset + i] ^= (original[i] ^ target[i])
     return bytes(ct)
 
 # --- Setup ---
-key = os.urandom(16)
-nonce = os.urandom(8)
-
+oracle = Oracle()
+user = os.urandom(8)
+ct = oracle.encrypt(user)
 
 # --- PoC - Bit Flipping Attack ---
-ct = ctr_bit_flipping_attack()
-pt = decrypt(ct)
-assert b";admin=true" in pt
+offset = len(b"user=" + user + b";admin=") 
+ct = ctr_bit_flipping_attack(ct, b"false", b"true\x00", offset)
+assert(b";admin=true" in oracle.decrypt(ct))
 
 
