@@ -6,20 +6,35 @@ from hashlib import sha1
 from Crypto.Util.number import bytes_to_long, long_to_bytes
 import random
 
-def sign(m, d, G):
-    q = G.order()
-    k = random.getrandbits(128)
-    r = int((k*G)[0])
-    while r % q == 0:
+class VulnerableECDSA:
+    def __init__(self):
+        self.p = 115792089210356248762697446949407573530086143415290314195533631308867097853951
+        self.a = -3
+        self.b = 41058363725152142129326129780047268409114441015993725554835256314039467401291
+
+        self.E = EllipticCurve(GF(self.p), [self.a, self.b])
+        self.G = self.E.gen(0)
+        self.q = self.G.order()
+
+        self.d = randint(2, self.q - 1) 
+        self.Q = self.d*self.G 
+
+    def get_public_parameters(self):
+        return self.E, self.G, self.Q, self.q
+
+    def sign(self, m):
         k = random.getrandbits(128)
-        r = int((k*G)[0])
+        r = int((k*self.G)[0])
+        while r % self.q == 0:
+            k = random.getrandbits(128)
+            r = int((k*self.G)[0])
 
-    h = bytes_to_long(sha1(m).digest())
-    s = (pow(k,-1,q) * (h + r*d)) % q
+        h = bytes_to_long(sha1(m).digest())
+        s = (pow(k,-1,self.q) * (h + r*self.d)) % self.q
 
-    return (r, s)
+        return (r, s)
 
-def biased_nonce_attack(signatures, hashes, G, Q, q):
+def biased_nonce_attack(signatures, hashes, G, Q, q, k_bound):
     assert(len(signatures) == len(hashes))
     a = []
     t = [] 
@@ -27,7 +42,7 @@ def biased_nonce_attack(signatures, hashes, G, Q, q):
         a.append( (pow(s, -1, q)*h) % q)
         t.append( (pow(s, -1, q)*r) % q)
     
-    B = 2**128
+    B = k_bound
     n = len(signatures)
     M = Matrix(QQ, n + 2, n + 2)
     for i in range(n):
@@ -52,24 +67,18 @@ def biased_nonce_attack(signatures, hashes, G, Q, q):
         if d*G == Q:
             return d
 
+def main():
+    # --- Setup ---
+    vuln_ecdsa = VulnerableECDSA()
+    E, G, Q, q = vuln_ecdsa.get_public_parameters()
 
-# --- Setup ---
-p = 115792089210356248762697446949407573530086143415290314195533631308867097853951
-a = -3
-b = 41058363725152142129326129780047268409114441015993725554835256314039467401291
+    messages = [os.urandom(16) for i in range(3)]
+    signatures = [vuln_ecdsa.sign(m) for m in messages]
 
-E = EllipticCurve(GF(p), [a, b])
-G = E.gen(0)
-q = G.order()
-d = randint(2, q - 1) # private key
-Q = d*G 
+    # --- PoC - Biased Nonce Attack ---
+    hashes = [bytes_to_long(sha1(m).digest()) for m in messages]
+    d = biased_nonce_attack(signatures, hashes, G, Q, q, 2**128) 
+    assert(d == vuln_ecdsa.d)
 
-messages = [os.urandom(16) for i in range(3)]
-signatures = [sign(m, d, G) for m in messages]
-
-# --- PoC - Biased Nonce Attack ---
-hashes = [bytes_to_long(sha1(m).digest()) for m in messages]
-d_recovered = biased_nonce_attack(signatures, hashes, G, Q, q) 
-assert(d_recovered == d)
-
-
+if __name__ == "__main__":
+    main()
