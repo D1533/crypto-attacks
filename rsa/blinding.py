@@ -4,34 +4,42 @@ from math import gcd
 from Crypto.Util.number import bytes_to_long, long_to_bytes, getPrime
 from random import randint
 
-# --- Setup ---
-p = getPrime(512)
-q = getPrime(512)
-N = p*q
-e = 0x10001
-d = pow(e, -1, (p-1)*(q-1))
+class Oracle:
+    def __init__(self):
+        self.p = getPrime(512)
+        self.q = getPrime(512)
+        self.n = self.p * self.q
+        self.e = 0x10001
+        self.d = pow(self.e, -1, (self.p - 1)*(self.q - 1))
+    
+    def get_public_key(self):
+        return self.n, self.e
 
-def sign(m):
-    if m == b"admin":
-        return None
-    return pow(bytes_to_long(m), d, N)
+    def sign(self, m):
+        if m == b"admin":
+            return None
+        return pow(bytes_to_long(m), self.d, self.n)
 
 
-S_admin = pow(bytes_to_long(b"admin"), d, N)
+def main():
+    # --- Setup ---
+    oracle = Oracle()
+    n, e = oracle.get_public_key()
 
+    # --- PoC - Blinding Attack --- 
+    m = bytes_to_long(b"admin")
+    r = randint(2, n - 1)
+    
+    # Ensure we can take the inverse of r mod n later
+    while gcd(r, n) != 1:
+        r = randint(2, n - 1)
 
-# --- PoC - Blinding Attack --- 
-m = bytes_to_long(b"admin")
-r = randint(2, N-1)
-# Ensure we can take the inverse of r mod N later
-while gcd(r, N) != 1:
-    r = randint(2, N-1)
+    m_blinded = long_to_bytes((pow(r, e, n) * m ) % n)
+    S_blinded = oracle.sign(m_blinded)
+    S_m = (pow(r, -1, n)*S_blinded ) % n
 
-m_blinded = long_to_bytes((pow(r, e, N) * m ) % N)
-S_blinded = sign(m_blinded)
-S_m = (pow(r,-1,N)*S_blinded ) % N
+    assert(long_to_bytes(pow(S_m, e, n)) == b"admin")
 
-assert(S_m == S_admin)
-assert(long_to_bytes(pow(S_m, e, N)) == b"admin")
-
+if __name__ == "__main__":
+    main()
 
