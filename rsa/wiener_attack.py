@@ -2,6 +2,27 @@
 
 from sage.all import *
 
+class VulnerableRSA:
+    def __init__(self):
+        self.d, self.p, self.q = self.generate_privkey()
+        self.n = self.p * self.q
+        self.e = pow(self.d, -1, (self.p - 1)*(self.q - 1))
+
+    def generate_privkey(self):
+        q = int(random_prime(2**128))
+        while True:
+            p = int(random_prime(2*q))
+            if p < q:
+                continue
+            n = p*q
+            phi = (p-1)*(q-1)
+            d = randint(2, int(n**(1/4)//3))
+            if gcd(d, phi) == 1:
+                return d, p, q
+    
+    def get_public_key(self):
+        return self.n, self.e
+
 def wiener_attack(e, n):
     conv = continued_fraction(QQ(e)/n).convergents() 
     for kd in conv:
@@ -23,23 +44,14 @@ def wiener_attack(e, n):
                 return d
     return None
 
-# --- Setup ---
-q = int(random_prime(2**128))
 
-while True:
-    p = int(random_prime(2*q))
-    if p < q:
-        continue
-    n = p*q
-    phi = (p-1)*(q-1)
+def main():
+    # --- Setup ---
+    vuln_rsa = VulnerableRSA()
 
-    d = randint(2, int(n**(1/4)//3))
-    if gcd(d, phi) == 1:
-        e = pow(d, -1, phi)
-        break
+    # --- PoC - Wiener Attack ---
+    n, e = vuln_rsa.get_public_key()
+    assert(vuln_rsa.d == wiener_attack(e, n))
 
-# --- PoC - Wiener Attack ---
-d_recovered = wiener_attack(e, n)
-assert(d == d_recovered)
-
-
+if __name__ == "__main__":
+    main()
