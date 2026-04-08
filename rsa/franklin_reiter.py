@@ -2,17 +2,32 @@
 
 from sage.all import *
 
-def generate_rsa_key():
-    e = 3
-    while True:
-        p = int(random_prime(2**512))
-        q = int(random_prime(2**512))
-        phi = (p-1)*(q-1) 
-        if gcd(e, phi) == 1:
-            N = p*q
-            d = pow(e, -1, phi)
-            return N, e, d
 
+class VulnerableRSA:
+    def __init__(self):
+        self.e = 3
+        self.p, self.q = self.generate_primes()
+        self.n = self.p * self.q
+        self.d = pow(self.e, -1, (self.p - 1)*(self.q - 1))
+
+    def generate_primes(self):
+        while True:
+            p = int(random_prime(2**512))
+            q = int(random_prime(2**512))
+            phi = (p-1)*(q-1) 
+            if gcd(self.e, phi) == 1:
+                return p, q 
+    def get_public_key(self):
+        return self.n, self.e
+    
+    def encrypt(self, m):
+        return pow(m, self.e, self.n)
+
+    def affine_encrypt(self, m):
+        a = randint(1, self.n - 1)
+        b = randint(0, self.n - 1)
+        return a, b, pow(a*m + b, self.e, self.n)
+    
 def franklin_reiter_attack(a, b, e, c1, c2, N):
      
     R = PolynomialRing(Zmod(N), 'x')
@@ -31,25 +46,21 @@ def franklin_reiter_attack(a, b, e, c1, c2, N):
     
     return m
 
-# --- Setup ---
-N, e, d = generate_rsa_key()
-
-Z_N = Zmod(N)
-a = Z_N.random_element()
-b = Z_N.random_element()
-
-# Ensure m1, m2 are units in Z_N
-m1 = Z_N.random_element()
-m2 = Z_N(a*m1 + b)
-while gcd(m1, N) != 1 or gcd(m2, N) != 1:
-    m1 = Z_N.random_element()
-    m2 = Z_N(a*m1 + b)
-
-c1 = pow(m1, e, N)
-c2 = pow(m2, e, N)
+def main():
+    # --- Setup ---
+    vuln_rsa = VulnerableRSA()
+    n, e = vuln_rsa.get_public_key()
+    m = randint(2, n - 1)
+    c1 = vuln_rsa.encrypt(m)
+    a, b, c2 = vuln_rsa.affine_encrypt(m)
+    
+    # --- PoC - Franklin-Reiter Attack
+    assert (m == franklin_reiter_attack(a, b, e, c1, c2, n))
 
 
-# --- PoC - Franklin-Reiter Attack ---
-m = franklin_reiter_attack(a, b, e, c1, c2, N)
-assert(m == m1)
+if __name__ == "__main__":
+    main()
+
+
+
 
