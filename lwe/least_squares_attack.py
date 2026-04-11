@@ -31,7 +31,7 @@ def main():
     vuln_lwe = VulnerableLWE()
     A, b, q = vuln_lwe.encrypt()
 
-    # --- PoC - Least-squares attack 
+    # --- PoC - Least-squares attack ---
     assert(vuln_lwe.s == least_squares_attack(A, b))
 
 if __name__ == "__main__":
