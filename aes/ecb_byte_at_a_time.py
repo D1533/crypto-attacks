@@ -44,11 +44,13 @@ def ecb_byte_at_a_time_attack(oracle):
 
     return secret
 
-# --- Setup ---
-oracle = Oracle()
+def main():
+    # --- Setup ---
+    oracle = Oracle()
 
-# --- PoC - ECB Byte At A Time ---
-secret = ecb_byte_at_a_time_attack(oracle)
-assert(oracle.secret == secret)
+    # --- PoC - ECB Byte At A Time ---
+    secret = ecb_byte_at_a_time_attack(oracle)
+    assert(oracle.secret == secret)
 
-
+if __name__ == "__main__":
+    main()
