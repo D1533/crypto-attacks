@@ -2,7 +2,26 @@
 
 from sage.all import *
 
-def arora_ge(q, A, b, E):
+
+class VulnerableLWE:
+    def __init__(self):
+        self.n = 32
+        self.m = 512
+        self.q = random_prime(2**16)
+        self.s = VectorSpace(GF(self.q), self.n).random_element() 
+
+    def encrypt(self):
+        A = []
+        b = []
+        V = VectorSpace(GF(self.q), self.n)
+        for _ in range(self.m):
+            a = V.random_element()
+            A.append(a)
+            b.append( a*self.s + randint(0,1))
+
+        return A, b, self.q
+
+def arora_ge_attack(q, A, b, E):
     m = len(A)
     n = len(A[0])
     
@@ -21,22 +40,13 @@ def arora_ge(q, A, b, E):
 
     return s
 
+def main():
+    # -- Setup --
+    vuln_lwe = VulnerableLWE()
+    A, b, q = vuln_lwe.encrypt()
 
-# -- Setup --
-n = 32
-m = 512
-q = random_prime(2**16)
-A = []
-b = []
-V = VectorSpace(GF(q), n)
-s = V.random_element()
-for i in range(m):
-    a_i = V.random_element()
-    b_i = a_i*s + randint(0,1)
-    A.append(a_i)
-    b.append(b_i)
+    # --- PoC - Arora-Ge Attack ---
+    assert(list(vuln_lwe.s) == arora_ge_attack(q, A, b, (0,1)))
 
-
-# --- PoC - Arora-Ge ---
-s_recovered = arora_ge(q, A, b, (0,1))
-assert(s == V(s_recovered))
+if __name__ == "__main__":
+    main()
