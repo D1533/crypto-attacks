@@ -2,6 +2,29 @@
 
 from sage.all import *
 
+class VulnerableRSA:
+    def __init__(self):
+        self.e = 3
+        self.n, self.d = self.generate_keys()
+        self.k = randint(2, 30)
+    
+    def generate_keys(self):
+        while True:
+            p = int(random_prime(2**512))
+            q = int(random_prime(2**512))
+            n = int(p*q)
+            phi = (p-1)*(q-1) 
+            if gcd(self.e, phi) == 1:
+                d = pow(self.e, -1, phi)
+                return n, d
+    
+    def get_public_keys(self):
+        return self.n, self.e
+    
+    def encrypt(self, m):
+        r = int(randint(0, 2**self.k - 1))
+        return pow(2**self.k*m + r, self.e, self.n)
+
 def coppersmith_short_pad(c1, c2, N, e, eps):
     R1 = PolynomialRing(Zmod(N), ['x', 'y'])
     x, y = R1.gens()
@@ -36,30 +59,23 @@ def coppersmith_short_pad(c1, c2, N, e, eps):
 
     m = franklin_reiter_attack(1, delta, e, c1, c2, N)
     
-    return m
+    return int(m)
 
-# --- Setup ---
-e = 3
-p = random_prime(2**128)
-q = random_prime(2**128)
-while gcd(e, (p-1)*(q-1)) != 1:
-    p = random_prime(2**512)
-    q = random_prime(2**512)
 
-N = int(p*q)
+def main():
+    # --- Setup --
+    vuln_rsa = VulnerableRSA()
+    k = vuln_rsa.k
+    n, e = vuln_rsa.get_public_keys()
+    
+    m = randint(2, 2**(n.bit_length() - k))
+    c1 = vuln_rsa.encrypt(m)
+    c2 = vuln_rsa.encrypt(m)
 
-k = randint(2, 100)
-r1 = randint(0, 2**k - 1)
-r2 = randint(0, 2**k - 1)
-m = randint(2, 2**(N.bit_length() - k))
-m1 = 2**k*m + r1
-m2 = 2**k*m + r2
-c1 = pow(m1, e, N)
-c2 = pow(m2, e, N)
+    # -- PoC - Coppersmith's Short Pad Attack ---
+    m1 = coppersmith_short_pad(c1, c2, n, e, eps=1/20) # m1 = 2**k*m + r1
+    assert(m == m1 // 2**k)
 
-# --- PoC - Coopersmith's Short Pad Attack --- 
-m1_recovered = coppersmith_short_pad(c1, c2, N, e, eps=1/20)
-m_recovered = m1 // 2**k
-assert(m1_recovered == m1) 
-assert(m_recovered == m)
 
+if __name__ == "__main__":
+    main()
