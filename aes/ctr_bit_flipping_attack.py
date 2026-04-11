@@ -28,14 +28,16 @@ def ctr_bit_flipping_attack(ct, original, target, offset):
         ct[offset + i] ^= (original[i] ^ target[i])
     return bytes(ct)
 
-# --- Setup ---
-oracle = Oracle()
-user = os.urandom(8)
-ct = oracle.encrypt(user)
+def main():
+    # --- Setup ---
+    oracle = Oracle()
+    user = os.urandom(12)
+    ct = oracle.encrypt(user)
 
-# --- PoC - Bit Flipping Attack ---
-offset = len(b"user=" + user + b";admin=") 
-ct = ctr_bit_flipping_attack(ct, b"false", b"true\x00", offset)
-assert(b";admin=true" in oracle.decrypt(ct))
+    # --- PoC - Bit Flipping Attack ---
+    offset = len(b"user=" + user + b";admin=")
+    ct = ctr_bit_flipping_attack(ct, b"false", b"true\x00", offset)
+    assert(b";admin=true" in oracle.decrypt(ct))
 
-
+if __name__ == "__main__":
+    main()
