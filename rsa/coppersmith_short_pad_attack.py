@@ -25,7 +25,7 @@ class VulnerableRSA:
         r = int(randint(0, 2**self.k - 1))
         return pow(2**self.k*m + r, self.e, self.n)
 
-def coppersmith_short_pad(c1, c2, N, e, eps):
+def coppersmith_short_pad_attack(c1, c2, N, e, eps):
     R1 = PolynomialRing(Zmod(N), ['x', 'y'])
     x, y = R1.gens()
     R2 = PolynomialRing(Zmod(N), 'y')
@@ -73,7 +73,7 @@ def main():
     c2 = vuln_rsa.encrypt(m)
 
     # -- PoC - Coppersmith's Short Pad Attack ---
-    m1 = coppersmith_short_pad(c1, c2, n, e, eps=1/20) # m1 = 2**k*m + r1
+    m1 = coppersmith_short_pad_attack(c1, c2, n, e, eps=1/20) # m1 = 2**k*m + r1
     assert(m == m1 // 2**k)
 
 
