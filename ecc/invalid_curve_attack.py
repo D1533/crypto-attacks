@@ -23,10 +23,8 @@ class Oracle:
 
         x1, y1 = P
         x2, y2 = Q
-
         if x1 == x2 and y1 == (-y2 % self.p):
             return None  
-
         if P != Q:
             m = (y2 - y1) * pow(x2 - x1,-1,self.p) % self.p
         else:
@@ -34,7 +32,6 @@ class Oracle:
 
         x3 = (m * m - x1 - x2) % self.p
         y3 = (m * (x1 - x3) - y1) % self.p
-
         return (x3, y3)
 
     def double_and_add(self, k, P):
