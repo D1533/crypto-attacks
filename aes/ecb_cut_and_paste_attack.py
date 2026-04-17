@@ -38,8 +38,11 @@ def ecb_cut_and_paste_attack(oracle, len_prefix, len_sufix, target, target_offse
     return ct
 
 def main():
+    # -- Setup ---
     oracle = Oracle()
     
+
+    # --- PoC - ECB Cut and Paste Attack --- 
     len_prefix = len("user=")
     len_sufix = len(";admin=False")
     target = b"True"
