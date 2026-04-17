@@ -10,12 +10,10 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 
 
 ### AES Attacks
-| Attack | Description |
-|--------|-------------|
-|[CBC Padding Oracle Attack](aes/cbc_padding_oracle_attack.py) | Recover plaintext by modifying ciphertext blocks and using a valid/invalid padding oracle to infer bytes. |
-|[CTR Bit Flipping Attack](aes/ctr_bit_flipping_attack.py) | Modify ciphertext to produce a chosen plaintext upon decryption. |
-|[ECB Byte At A Time](aes/ecb_byte_at_a_time.py) | Recover secret appended to controlled input using an ECB encryption oracle.|
-|[ECB Cut  and Paste Attack](aes/ecb_cut_and_paste_attack.py) | Create and rearrenge encrypted blocks to forge a new message.|
+- [CBC Padding Oracle Attack](aes/cbc_padding_oracle_attack.py) - Recover plaintext by modifying ciphertext blocks and using a valid/invalid padding oracle to infer bytes. 
+- [CTR Bit Flipping Attack](aes/ctr_bit_flipping_attack.py) - Modify ciphertext to produce a chosen plaintext upon decryption. 
+- [ECB Byte At A Time](aes/ecb_byte_at_a_time.py) - Recover secret appended to controlled input using an ECB encryption oracle.
+- [ECB Cut  and Paste Attack](aes/ecb_cut_and_paste_attack.py) - Create and rearrenge encrypted blocks to forge a new message.
 
 ### Diffie-Hellman Attacks
 - [Discrete log in GL(n, p)](diffie-hellman/discrete_log_GL.py) – Solve discrete log in GL(n, p).
