@@ -23,6 +23,7 @@ A collection of cryptographic attack implementations and proofs-of-concept in Sa
 ### Elliptic Curve Attacks
 - [ECDSA Biased Nonces Attack](ecc/ecdsa_biased_nonce_attack.py) –  Recover private key when nonces are partially predictable (lattice attack).
 - [ECDSA Nonce Reuse Attack](ecc/ecdsa_nonce_reuse.py) – Recover private key when the same nonce is reused in two signatures.
+- [Invalid Curve Attack](ecc/invalid_curve_attack.py) - Exploits missing point validation to force scalar multiplication on other weak curves.
 - [MOV Attack](mov_attack.py) –  Reduce elliptic curve discrete log to finite field discrete log using weil-pairing.
 - [Smart Attack](ecc/smart_attack.py) – Solve discrete log on anomalous curves (when #E = p).
 
